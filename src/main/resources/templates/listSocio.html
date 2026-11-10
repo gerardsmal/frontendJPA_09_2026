@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
+<script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL" crossorigin="anonymous"></script>
+<title>List Socio</title>
+</head>
+<body>
+	<div class="container-fluid mt-3" align="center">
+	
+		<table class="table table-secondary" style="width: 60%; text-align: center">
+			<thead>
+				<th>Cognome</th>
+				<th>nome</th>
+				<th>Email</th>
+				<th>Codice fiscale</th>
+				<th>Certificato Medico</th>
+				<th>Abbonamento</th>
+			</thead>
+			
+			<tbody>
+				<tr th:each="socio : ${listsocio}">
+					<td align="center">[[${socio.cognome}]]</td>
+					<td align="center">[[${socio.nome}]]</td>
+					<td align="center">[[${socio.email}]]</td>
+					<td align="center">[[${socio.codiceFiascale}]]</td>
+					<td>
+						<span th:text="${socio.certificato} != null ? ${socio.certificato.tipo} : 'senza'"></span>
+					</td>
+					<td>
+						<span th:text="${#lists.size(socio.abbonamento) > 0} ? 'abbonamento attivi' : 'senza abbonamento'"></span>
+					</td>
+				</tr>
+			</tbody>
+		
+		
+		</table>
+	</div>
+</body>
+</html>
