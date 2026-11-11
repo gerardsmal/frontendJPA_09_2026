@@ -1,0 +1,19 @@
+<div th:fragment="block-navigation(myTitle)">
+
+    <nav class="navbar navbar-light bg-white border-bottom">
+        <div class="container-fluid justify-content-start">
+            <a class="navbar-brand" href="https://www.betacom.it/betacom-academy/">JPA</a>
+
+            <div class="navbar-nav flex-row gap-3">
+                <a class="nav-link menu-link" th:href="@{/listSocio}">Gestione socio</a>
+
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="mt-3">
+        <h2 class="text-center" th:text="${myTitle}"></h2>
+    </div>
+
+</div>

@@ -7,8 +7,35 @@
 <title>List Socio</title>
 </head>
 <body>
+	<nav th:insert="~{fragments/navigation :: block-navigation('Elenco soci')}"></nav>
 	<div class="container-fluid mt-3" align="center">
-	
+		<form th:action="@{listSocio}" th:object="${param}"
+			  method="get"	
+			  class="row g-3 align-items-center mb-4"
+		      style="width: 60%; margin:auto">
+		
+			<div class="col-auto">
+				<input type="text" name="nome" class="form-control"
+					placeholder="Nome" th:value="*{nome}">
+			</div>
+			<div class="col-auto">
+				<input type="text" name="cognome" class="form-control"
+					placeholder="Cognome" th:value="*{cognome}">
+			</div>
+			<div class="col-auto">
+				<select class="form-select" th:field="*{attivita}">
+					<option value="">Selezione attivita</option>
+					<option  th:each="att : ${listAttivita}"
+						th:value="${att.id}"
+						th:text="${att.descrizione}">
+					</option>
+				</select>
+			</div>
+			<div class="col-auto ms-auto">
+				<button type="submit" class="btn btn-primary">cerca</button>
+				<a th:href="@{createSocio}"  class="btn btn-secondary">Nuovo socio</a>
+			</div>
+		</form>
 		<table class="table table-secondary" style="width: 60%; text-align: center">
 			<thead>
 				<th>Cognome</th>

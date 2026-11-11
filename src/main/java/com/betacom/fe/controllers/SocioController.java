@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.betacom.fe.dto.input.SocioReq;
 import com.betacom.fe.dto.output.AttivitaDTO;
 import com.betacom.fe.dto.output.SocioDTO;
 
@@ -32,6 +33,8 @@ public class SocioController {
 			@RequestParam(required = false) Integer attivita			
 			) {
 		ModelAndView mav = new ModelAndView("listSocio");
+		
+		log.debug("listSocio {}/{}/{}", nome, cognome, attivita);
 		
 		List<SocioDTO> soci = webclient.get()
 				.uri(uriBuilder -> uriBuilder
@@ -57,7 +60,19 @@ public class SocioController {
 		
 		mav.addObject("listsocio", soci);
 		mav.addObject("listAttivita", att);
+		mav.addObject("param", new SocioReq());
 		
 		return mav;
 	}
+	
+	@GetMapping("createSocio")
+	public ModelAndView createSocio() {
+		ModelAndView mav = new ModelAndView("createSocio");
+		
+		mav.addObject("socio", new SocioReq());
+		
+		return mav;
+	}
+	
+	
 }
