@@ -3,7 +3,9 @@ package com.betacom.fe.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.boot.webmvc.autoconfigure.WebMvcAutoConfiguration;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,9 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class SocioController {
 
+	private final TestController testController;
 	private final WebClient webclient;
-	
-	
+		
 	@GetMapping("/listSocio")
 	public ModelAndView listSocio(
 			@RequestParam(required = false) Integer id,
@@ -79,15 +81,50 @@ public class SocioController {
 			mav.addObject("socio", new SocioReq());			
 		}
 		
-		
+		model.addAttribute("titolo", "Creazione nuovo socio");
 		return mav;
 	}
 
+	@GetMapping("updateSocio")
+	public ModelAndView updateSocio(@RequestParam Integer id, Model model) {
+		ModelAndView mav = new ModelAndView("createSocio"); 
+		if (!model.containsAttribute("socio")) {
+			SocioDTO soc = webclient.get()
+					.uri(uriBuilder -> uriBuilder
+							.path("socio/getById")
+							.queryParam("id",id)
+							.build())
+					.retrieve()
+					.bodyToMono(SocioDTO.class)
+					.block();
+			
+			model.addAttribute("socio", SocioReq.builder()
+					.id(soc.getId())
+					.nome(soc.getNome())
+					.cognome(soc.getCognome())
+					.email(soc.getEmail())
+					.codiceFiscale(soc.getCodiceFiscale())
+					.build()
+					);
+		}
+		model.addAttribute("titolo", "Aggiornamento socio");
+		return mav;
+	}
+	
+	
+	
+	
 	@PostMapping("saveSocio")
 	public String saveSocio(@ModelAttribute("socio") SocioReq req, RedirectAttributes ra) {
 		
-		ResponseEntity<ResponseDTO> response = webclient.post()
-				.uri("socio/create")
+		String operation = req.getId() == null ? "create" : "update";
+		String errorLink = req.getId() == null ? "createSocio" : "updateSocio?id=" + req.getId(); 		
+		String url = "socio/" + operation;
+		
+		HttpMethod metodo = req.getId() == null ? HttpMethod.POST : HttpMethod.PATCH;
+		
+		ResponseEntity<ResponseDTO> response = webclient.method(metodo)
+				.uri(url)
 				.bodyValue(req)
 				.exchangeToMono(resp -> resp.toEntity(ResponseDTO.class))
 				.block();
@@ -97,8 +134,7 @@ public class SocioController {
 			log.debug("msg: {}", response.getBody().getMsg());
 			ra.addFlashAttribute("errorMsg", response.getBody().getMsg());
 			ra.addFlashAttribute("socio", req);
-
-			return "redirect:/createSocio";
+			return "redirect:/" + errorLink;
 		}
 		
 		return "redirect:/listSocio";

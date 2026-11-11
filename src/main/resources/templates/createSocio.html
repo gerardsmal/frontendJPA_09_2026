@@ -2,18 +2,19 @@
 <html lang="it" xmlns:th="http://www.thymeleaf.org" >
 <head>
 <meta charset="UTF-8">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
-<script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL" crossorigin="anonymous"></script><title>Insert title here</title>
-<title>Create Socio</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script><title>Create Socio</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-	<nav th:insert="~{fragments/navigation :: block-navigation('Creazione socio')}"></nav>
+	<header th:insert="~{fragments/navigation :: block-navigation(${titolo})}"></header>
 	<div class="container-fluid mt-2" align="center">
-		<div th:if="${errorMsg}" class="alert-danger" th:text="${errorMsg}"></div>
-	
+		<div th:if="${errorMsg}" class="alert alert-danger" th:text="${errorMsg}"></div>
 		<form class="form-content" th:action="@{saveSocio}" th:object="${socio}"
 			method="post"
 			style="width: 50%; margin: auto">
+			
+			<input type="hidden" th:field="*{id}">
 			<table class="table table-secondary m-25">
 				<tr>
 					<td><label class="form-label">Nome</label></td>
