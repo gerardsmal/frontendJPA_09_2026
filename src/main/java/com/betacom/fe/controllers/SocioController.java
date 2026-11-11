@@ -4,14 +4,20 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.betacom.fe.dto.input.SocioReq;
 import com.betacom.fe.dto.output.AttivitaDTO;
+import com.betacom.fe.dto.output.ResponseDTO;
 import com.betacom.fe.dto.output.SocioDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -66,12 +72,37 @@ public class SocioController {
 	}
 	
 	@GetMapping("createSocio")
-	public ModelAndView createSocio() {
+	public ModelAndView createSocio(Model model) {
 		ModelAndView mav = new ModelAndView("createSocio");
 		
-		mav.addObject("socio", new SocioReq());
+		if (!model.containsAttribute("socio")) {
+			mav.addObject("socio", new SocioReq());			
+		}
+		
 		
 		return mav;
+	}
+
+	@PostMapping("saveSocio")
+	public String saveSocio(@ModelAttribute("socio") SocioReq req, RedirectAttributes ra) {
+		
+		ResponseEntity<ResponseDTO> response = webclient.post()
+				.uri("socio/create")
+				.bodyValue(req)
+				.exchangeToMono(resp -> resp.toEntity(ResponseDTO.class))
+				.block();
+		
+		if (!response.getStatusCode().is2xxSuccessful()) {
+			log.debug("error found in create..");
+			log.debug("msg: {}", response.getBody().getMsg());
+			ra.addFlashAttribute("errorMsg", response.getBody().getMsg());
+			ra.addFlashAttribute("socio", req);
+
+			return "redirect:/createSocio";
+		}
+		
+		return "redirect:/listSocio";
+		
 	}
 	
 	

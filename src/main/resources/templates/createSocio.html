@@ -9,6 +9,7 @@
 <body>
 	<nav th:insert="~{fragments/navigation :: block-navigation('Creazione socio')}"></nav>
 	<div class="container-fluid mt-2" align="center">
+		<div th:if="${errorMsg}" class="alert-danger" th:text="${errorMsg}"></div>
 	
 		<form class="form-content" th:action="@{saveSocio}" th:object="${socio}"
 			method="post"
