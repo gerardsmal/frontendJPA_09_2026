@@ -120,7 +120,23 @@ public class AbbonamentoController {
 		return "redirect:/listAbbonamento?id=" + req.getSocioID();
 	}
 	
-	
+	@GetMapping("removeAbbonamentoAttivita")
+	public String removeAbbonamentoAttivita(
+			@RequestParam Integer abboID,
+			@RequestParam Integer attID,
+			@RequestParam Integer socioID) {
+		
+		ResponseDTO response = webclient.delete()
+				.uri("abbonamento/deleteAbbonamentoAttivita/{abboID}/{attID}", abboID, attID)
+				.retrieve()
+				.bodyToMono(ResponseDTO.class)
+				.block();
+		
+		log.debug("Response remove: {}", response.getMsg());
+		
+		return "redirect:/listAbbonamento?id=" + socioID;
+		
+	}
 	
 	
 	

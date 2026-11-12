@@ -41,7 +41,10 @@
 				<td align="center">
 					<ul class="list-unstyled">
 						<li th:each="att : ${abb.attivita}">
+							<a th:href="@{removeAbbonamentoAttivita(abboID=${abb.id},attID=${att.id}, socioID=${socio.id})}"
+									onclick="return confirm('Sei sicuro di volere rimuovere questa attività')"	>
 								<span th:text="|${att.descrizione} - ${#numbers.formatDecimal(att.prezzo,1,2)} €|"></span>
+							</a>	
 						</li>
 						<a th:href="@{aggiungiAttivita (abboID=${abb.id}, socioID=${socio.id} )}"
 							class="btn btn-primary">Nuova attività</a>
