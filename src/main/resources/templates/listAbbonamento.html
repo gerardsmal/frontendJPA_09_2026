@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<title>List Abbonamento</title>
+</head>
+<body>
+	<nav th:insert="~{fragments/navigation :: block-navigation(${titolo})}"></nav>
+	<div class="container mt-3" align="center">
+	
+		<div class="card-header d-flex justify-content-between align-item-center">
+			<div>
+				<p class="mb-0">Detaglio abbonamento</p> 
+			</div>		
+			<a  th:href="@{createAbbonamento(id=${socio.id})}"
+				class="btn btn-primary">
+				Nuovo abbonamento			
+			</a>
+		</div>
+		<table class="table table-secondary mt-2">
+			<thead>
+				<tr align="center">
+					<th>Data inscrizione</th>
+					<th>Durata abbonamento</th>
+					<th>Attivita</th>				
+				</tr>
+			</thead>		
+			<tbody>
+				<tr th:each="abb : ${socio.abbonamento}">
+					<td align="center">
+						<a th:href="@{removeAbbonamento(abboID=${abb.id}, socioID=${socio.id})}"
+							onclick="return confirm('Sei sicuro di volere rimuovere questo abbonamento')"	>
+							<span th:text="${#temporals.format(abb.dataAbbonamento, 'dd/MM/yyyy')}"></span>
+						</a>
+					</td>
+					<td align="center">
+						<span th:text="${abb.durataAbbonamento} + ' mesi'"></span>
+					</td>			
+				<td align="center">
+					<ul class="list-unstyled">
+						<li th:each="att : ${abb.attivita}">
+								<span th:text="|${att.descrizione} - ${#numbers.formatDecimal(att.prezzo,1,2)} €|"></span>
+						</li>
+						<a th:href="@{aggiungiAttivita (abboID=${abb.id}, socioID=${socio.id} )}"
+							class="btn btn-primary">Nuova attività</a>
+					</ul>
+				</td>
+			</table>
+		</tbody>
+
+	</div>
+</body>
+</html>

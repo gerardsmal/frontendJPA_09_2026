@@ -30,7 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class SocioController {
 
-	private final TestController testController;
 	private final WebClient webclient;
 		
 	@GetMapping("/listSocio")
@@ -110,9 +109,6 @@ public class SocioController {
 		model.addAttribute("titolo", "Aggiornamento socio");
 		return mav;
 	}
-	
-	
-	
 	
 	@PostMapping("saveSocio")
 	public String saveSocio(@ModelAttribute("socio") SocioReq req, RedirectAttributes ra) {

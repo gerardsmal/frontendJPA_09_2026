@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script><title>Create Socio</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<header th:insert="~{fragments/navigation :: block-navigation('Aggiungere un attivita')}"></header>
+	
+	<div class="container-fluid mt-2" align="center">
+		<div th:if="${errorMsg}" class="alert alert-danger" th:text="${errorMsg}"></div>
+		<form class="form-content" th:action="@{saveAbbonamentoAttivita}"
+				method="post" 
+				th:object=${param}
+				style="width: 30%; margin: auto;">
+				
+				<select class="form-select" th:field="*{attivitaID}">
+					<option value="" selected>Selezionare un attivita</option>
+					<option th:each="att : ${listAttivita}"
+						th:value="${att.id}"
+						th:text="|${att.descrizione} - ${#numbers.formatDecimal(att.prezzo,1,2)} €|"></option>
+				</select>
+
+				<input type="hidden" th:field="*{id}"> 				
+				<input type="hidden" th:field="*{socioID}">
+				
+				<div align="center" class="mt-4">
+					<button type="submit" class="btn btn-info">Aggiungi attivita</button>
+				</div> 				
+		
+		
+		</form>
+	</div>
+
+</body>
+</html>

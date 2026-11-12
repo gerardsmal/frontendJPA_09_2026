@@ -55,10 +55,14 @@
 					<td align="center">[[${socio.email}]]</td>
 					<td align="center">[[${socio.codiceFiscale}]]</td>
 					<td class="noselect">
-						<span th:text="${socio.certificato} != null ? ${socio.certificato.tipo} : 'senza'"></span>
+						<a th:href="@{updateCertificatoMedico(id=${socio.id})}">
+							<span th:text="${socio.certificato} != null ? ${socio.certificato.tipo} : 'senza'"></span>
+						</a>
 					</td>
 					<td class="noselect">
-						<span th:text="${#lists.size(socio.abbonamento) > 0} ? 'abbonamento attivi' : 'senza abbonamento'"></span>
+						<a th:href="@{listAbbonamento(id=${socio.id})}">
+							<span th:text="${#lists.size(socio.abbonamento) > 0} ? 'abbonamento attivi' : 'senza abbonamento'"></span>
+						</a>
 					</td>
 				</tr>
 			</tbody>
