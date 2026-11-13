@@ -72,6 +72,28 @@ public class SocioController {
 		return mav;
 	}
 	
+	@GetMapping("listScaduti")
+	public ModelAndView listScaduti() {
+		ModelAndView mav = new ModelAndView("listScaduti");
+		
+		List<SocioDTO> soci = webclient.get()
+				.uri(uriBuilder -> uriBuilder
+						.path("socio/listCertificatoScaduto")
+						.build())
+				.retrieve()
+				.bodyToMono(new ParameterizedTypeReference<List<SocioDTO>>() {})
+				.block();
+				
+		log.debug("dopo webclient size:{}", soci.size());
+		
+		
+		mav.addObject("listsocio", soci);
+		return mav;
+	}
+	
+	
+	
+	
 	@GetMapping("createSocio")
 	public ModelAndView createSocio(Model model) {
 		ModelAndView mav = new ModelAndView("createSocio");
